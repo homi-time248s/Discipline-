@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Discipline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --card:#141414;
+    --card-2:#1c1c1c;
+    --line:#333333;
+    --white:#ffffff;
+    --ink:#f5f5f5;
+    --ink-dim:#9a9a9a;
+    --ink-faint:#5c5c5c;
+    --shadow: 0 2px 4px rgba(0,0,0,0.5), 0 16px 40px rgba(0,0,0,0.6);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background-color:var(--bg);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 34px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,0.016) 0px, rgba(255,255,255,0.016) 1px, transparent 1px, transparent 34px);
+    color:var(--ink);
+    font-family:'Vazirmatn', sans-serif;
+    min-height:100vh;
+    padding:22px 16px 90px;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:980px; margin:0 auto;}
+
+  /* Header */
+  .head-card{
+    position:relative;
+    background:linear-gradient(160deg, var(--card-2), var(--card));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:22px 24px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .bolt-svg{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-6deg);
+    width:130%; height:60px; pointer-events:none; opacity:0;
+    filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #fff);
+    animation:boltFlash 6s ease-in-out infinite;
+  }
+  @keyframes boltFlash{
+    0%, 88%, 100% { opacity:0; }
+    89% { opacity:1; } 90% { opacity:0.2; } 91% { opacity:1; }
+    93% { opacity:0.4; } 95% { opacity:0; }
+  }
+  .head-row{
+    position:relative; z-index:2; display:flex; justify-content:space-between;
+    align-items:flex-start; flex-wrap:wrap; gap:16px;
+  }
+  .discipline-title{
+    font-family:'Oswald', 'Vazirmatn', sans-serif;
+    font-size:34px; font-weight:700; letter-spacing:0.12em;
+    color:var(--white); text-transform:uppercase; white-space:nowrap;
+  }
+  .id-block{text-align:left; min-width:200px;}
+  .id-row{display:flex; align-items:baseline; gap:8px; justify-content:flex-end; margin-bottom:8px;}
+  .id-label{font-size:11px; letter-spacing:.08em; color:var(--ink-faint); font-weight:700; white-space:nowrap;}
+  .id-row input{
+    background:none; border:none; border-bottom:1px solid var(--line);
+    color:var(--ink); font-family:inherit; font-size:14px; font-weight:600;
+    padding:2px 4px; text-align:left; direction:ltr; width:140px;
+  }
+  .id-row input:focus{outline:none; border-bottom-color:var(--white);}
+  .id-row .date-static{font-size:13.5px; font-weight:700; color:var(--white); direction:ltr;}
+
+  .section-title{
+    font-size:13px; font-weight:800; color:var(--white);
+    margin:26px 3px 10px; display:flex; align-items:center; gap:10px; letter-spacing:.03em;
+  }
+  .section-title::after{content:""; flex:1; height:1px; background:linear-gradient(90deg, var(--line), transparent);}
+
+  /* Goals */
+  .goals-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:10px;}
+  .goal-card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:14px 15px; box-shadow:var(--shadow); position:relative;
+  }
+  .goal-card::before{
+    content:""; position:absolute; top:0; bottom:0; right:0; width:3px;
+    background:var(--white); border-radius:0 16px 16px 0; opacity:.5;
+  }
+  .goal-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  .goal-tag{
+    font-size:10.5px; font-weight:800; padding:3px 10px; border-radius:20px;
+    background:var(--card-2); color:var(--white); letter-spacing:.02em; border:1px solid var(--line);
+  }
+  .goal-date-input{
+    background:var(--card-2); border:1px solid var(--line); border-radius:7px; padding:3px 7px;
+    color:var(--ink-faint); font-family:inherit; font-size:10.5px; text-align:left; direction:ltr;
+  }
+  .goal-date-input:focus{outline:none; color:var(--white);}
+  .goal-text{
+    font-size:14px; font-weight:500; color:var(--ink); line-height:1.6;
+    background:none; border:none; width:100%; font-family:inherit; resize:none; padding:0; min-height:42px;
+  }
+  .goal-text:focus{outline:none;}
+  .goal-text::placeholder{color:var(--ink-faint);}
+
+  /* Table */
+  .table-wrap{
+    overflow-x:auto; border-radius:16px; border:1px solid var(--line);
+    box-shadow:var(--shadow); background:var(--card);
+  }
+  table{border-collapse:collapse; width:100%; min-width:900px;}
+  thead th{
+    background:var(--card-2); color:var(--white); font-size:11.5px; font-weight:800;
+    padding:10px 4px; border-bottom:1px solid var(--line); border-left:1px solid var(--line);
+    position:sticky; top:0;
+  }
+  thead th:first-child{
+    position:sticky; right:0; z-index:3; min-width:190px; text-align:right; padding-right:14px;
+    border-left:1px solid var(--line);
+  }
+  thead th.result-th{min-width:64px;}
+  tbody td{
+    border-bottom:1px solid var(--line); border-left:1px solid var(--line);
+    text-align:center; padding:0;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  .habit-cell{
+    position:sticky; right:0; background:var(--card-2); z-index:2;
+    text-align:right; padding:8px 12px; min-width:190px;
+  }
+  .habit-inner{display:flex; align-items:center; gap:8px;}
+  @keyframes floatEmoji{
+    0%,100%{ transform:translateY(0) rotate(-3deg); }
+    50%{ transform:translateY(-4px) rotate(4deg); }
+  }
+  .emoji-btn{
+    width:30px; height:30px; border-radius:9px; background:var(--card);
+    border:1px solid var(--line); font-size:15px; display:flex; align-items:center;
+    justify-content:center; flex:0 0 auto; cursor:pointer;
+    animation:floatEmoji 2.6s ease-in-out infinite;
+  }
+  .habit-label{
+    flex:1; font-size:13px; font-weight:600; color:var(--ink);
+    background:none; border:none; font-family:inherit; padding:0; min-width:70px;
+  }
+  .habit-label:focus{outline:none; color:var(--white);}
+  .mini-btn{
+    background:none; border:none; font-size:13px; color:var(--ink-faint); cursor:pointer; padding:2px 4px; flex:0 0 auto;
+  }
+  .mini-btn.star-on{color:var(--white);}
+  .photo-thumb-mini{width:22px; height:22px; border-radius:6px; object-fit:cover; cursor:pointer; border:1px solid var(--line);}
+
+  .day-cell{
+    width:34px; height:38px; cursor:pointer; font-size:11px; color:var(--ink-faint); user-select:none;
+    transition:background .1s ease;
+  }
+  .day-cell.on{background:var(--white); color:#000; font-weight:800;}
+  .day-cell.locked{opacity:.3; cursor:not-allowed;}
+  .day-cell.waiting{opacity:.55; cursor:not-allowed;}
+  .day-cell.next-open{box-shadow:inset 0 0 0 2px rgba(255,255,255,0.35); animation:pulseNext 1.6s ease-in-out infinite;}
+  @keyframes pulseNext{
+    0%,100%{ box-shadow:inset 0 0 0 2px rgba(255,255,255,0.15); }
+    50%{ box-shadow:inset 0 0 0 3px rgba(255,255,255,0.4); }
+  }
+  @keyframes shakeCell{
+    0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-2px); } 75%{ transform:translateX(2px); }
+  }
+  .day-cell.shake{animation:shakeCell .25s ease;}
+  .result-cell{
+    font-size:13px; font-weight:900; color:var(--white); min-width:60px;
+  }
+
+  /* Add row */
+  .add-card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:13px 14px; box-shadow:var(--shadow); margin-top:14px;
+  }
+  .add-row{display:flex; gap:9px;}
+  .add-row input.emoji-input{width:48px; text-align:center; font-size:18px; flex:0 0 auto;}
+  .add-row input{
+    border:1px solid var(--line); border-radius:11px; padding:11px 13px;
+    font-family:inherit; font-size:14px; background:var(--card-2); color:var(--ink);
+  }
+  .add-row input[type=text]{flex:1;}
+  .add-row input:focus{outline:2px solid var(--white); outline-offset:1px;}
+  .add-row button{
+    border:none; background:var(--white); color:#000;
+    border-radius:11px; padding:0 18px; font-family:inherit; font-weight:800; font-size:14px; cursor:pointer;
+  }
+
+  .footer-row{
+    display:flex; justify-content:space-between; align-items:center; margin-top:26px;
+    font-size:11.5px; color:var(--ink-faint);
+  }
+  .credit{font-weight:700; color:var(--ink-dim);}
+
+  .lightbox{
+    position:fixed; inset:0; background:rgba(0,0,0,0.9); display:none;
+    align-items:center; justify-content:center; z-index:50; padding:24px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:100%; max-height:85vh; border-radius:16px; box-shadow:var(--shadow);}
+
+  .loading{text-align:center; padding:50px; color:var(--ink-faint); font-size:14px;}
+
+  @media(min-width:640px){
+    .discipline-title{font-size:44px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head-card">
+    <svg class="bolt-svg" viewBox="0 0 400 70" preserveAspectRatio="none">
+      <polyline points="0,35 90,20 130,40 200,10 240,45 300,25 400,38"
+        fill="none" stroke="#ffffff" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>
+    <div class="head-row">
+      <div class="discipline-title">Discipline</div>
+      <div class="id-block">
+        <div class="id-row">
+          <span class="id-label">NAME</span>
+          <input id="nameInput" placeholder="اسمت...">
+        </div>
+        <div class="id-row">
+          <span class="id-label">DATE</span>
+          <span class="date-static" id="dateStatic">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">🎯 هدف‌ها</div>
+  <div class="goals-grid" id="goalsGrid"></div>
+
+  <div class="section-title">✅ کارها — ۳۰ روز</div>
+  <div class="table-wrap">
+    <table id="habitTable">
+      <thead>
+        <tr id="headRow">
+          <th>کار</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="add-card">
+    <div class="add-row">
+      <input type="text" class="emoji-input" id="emojiInput" value="✨">
+      <input type="text" id="newTaskInput" placeholder="یه کار جدید اضافه کن...">
+      <button id="addBtn">افزودن</button>
+    </div>
+  </div>
+
+  <div class="footer-row">
+    <span>هر خونه یه روزه؛ ۲۰ ساعت بعد از هر تیک، خونه بعدی باز می‌شه</span>
+    <span class="credit">سازنده: هومَن</span>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox"><img id="lightboxImg" src=""></div>
+
+<script>
+const DEFAULT_TASKS = [
+  {id:'run', label:'دویدن + کالیستنیکس', emoji:'🏃‍♂️'},
+  {id:'gratitude', label:'شکرگزاری', emoji:'🙏'},
+  {id:'lang', label:'زبان انگلیسی/فرانسوی', emoji:'🗣️'},
+  {id:'draw', label:'طراحی', emoji:'🎨'},
+  {id:'read', label:'کتاب/مانگا/رمان', emoji:'📖'},
+  {id:'plants', label:'گل و گیاه', emoji:'🌱'},
+  {id:'journal', label:'ژورنال‌نویسی', emoji:'📓'},
+];
+const GOAL_DEFS = [
+  {key:'short', tag:'کوتاه‌مدت'},
+  {key:'mid', tag:'میان‌مدت'},
+  {key:'long', tag:'بلندمدت'},
+];
+const WEEKDAYS_FA = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
+const JALALI_MONTHS = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+
+function toJalali(gy, gm, gd){
+  const g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+  let jy = (gy <= 1600) ? 0 : 979;
+  gy -= (gy <= 1600) ? 621 : 1600;
+  const gy2 = (gm > 2) ? (gy + 1) : gy;
+  let days = (365 * gy) + (Math.floor((gy2 + 3) / 4)) - (Math.floor((gy2 + 99) / 100)) + (Math.floor((gy2 + 399) / 400)) - 80 + gd + g_d_m[gm - 1];
+  jy += 33 * Math.floor(days / 12053);
+  days %= 12053;
+  jy += 4 * Math.floor(days / 1461);
+  days %= 1461;
+  if (days > 365) { jy += Math.floor((days - 1) / 365); days = (days - 1) % 365; }
+  let jm, jd;
+  if (days < 186) { jm = 1 + Math.floor(days / 31); jd = 1 + (days % 31); }
+  else { jm = 7 + Math.floor((days - 186) / 30); jd = 1 + ((days - 186) % 30); }
+  return [jy, jm, jd];
+}
+
+let customTasks = [];
+let ticksByTask = {};
+let timesByTask = {};
+let photoByTask = {};
+let importantMap = {};
+let goals = {short:'', mid:'', long:'', shortDate:'', midDate:'', longDate:''};
+let userName = '';
+const LOCK_MS = 20*60*60*1000;
+
+function allTasks(){ return [...DEFAULT_TASKS, ...customTasks]; }
+function getTicks(id){ if(!ticksByTask[id]) ticksByTask[id] = new Array(30).fill(false); return ticksByTask[id]; }
+function getTimes(id){ if(!timesByTask[id]) timesByTask[id] = new Array(30).fill(null); return timesByTask[id]; }
+function nextIndexOf(ticks){ const idx = ticks.indexOf(false); return idx === -1 ? 30 : idx; }
+
+async function loadData(){
+  try{
+    const raw = localStorage.getItem('discipline-state');
+    if(raw){
+      const p = JSON.parse(raw);
+      customTasks = p.customTasks || [];
+      ticksByTask = p.ticksByTask || {};
+      timesByTask = p.timesByTask || {};
+      photoByTask = p.photoByTask || {};
+      importantMap = p.importantMap || {};
+      goals = p.goals || goals;
+      userName = p.userName || '';
+    }
+  }catch(e){ /* fresh */ }
+}
+async function saveData(){
+  try{
+    localStorage.setItem('discipline-state', JSON.stringify({customTasks, ticksByTask, timesByTask, photoByTask, importantMap, goals, userName}));
+  }catch(e){ console.error('ذخیره ناموفق', e); }
+}
+
+function renderHeader(){
+  const d = new Date();
+  const [jy,jm,jd] = toJalali(d.getFullYear(), d.getMonth()+1, d.getDate());
+  document.getElementById('dateStatic').textContent = `${jd} ${JALALI_MONTHS[jm-1]} ${jy} — ${WEEKDAYS_FA[d.getDay()]}`;
+  document.getElementById('nameInput').value = userName;
+}
+
+function renderGoals(){
+  const grid = document.getElementById('goalsGrid');
+  grid.innerHTML = '';
+  GOAL_DEFS.forEach(g=>{
+    const card = document.createElement('div');
+    card.className = 'goal-card';
+    card.innerHTML = `
+      <div class="goal-top">
+        <span class="goal-tag">${g.tag}</span>
+        <input type="date" class="goal-date-input" data-key="${g.key}Date" value="${goals[g.key+'Date']||''}">
+      </div>
+      <textarea class="goal-text" data-key="${g.key}" rows="2" placeholder="هدف ${g.tag} چیه؟">${goals[g.key]||''}</textarea>
+    `;
+    grid.appendChild(card);
+  });
+  grid.querySelectorAll('.goal-text').forEach(el=>{
+    el.addEventListener('input', ()=>{ goals[el.dataset.key]=el.value; saveData(); });
+  });
+  grid.querySelectorAll('.goal-date-input').forEach(el=>{
+    el.addEventListener('change', ()=>{ goals[el.dataset.key]=el.value; saveData(); });
+  });
+}
+
+function compressImage(file){
+  return new Promise((resolve,reject)=>{
+    const reader = new FileReader();
+    reader.onload = (e)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const maxW = 400;
+        const scale = Math.min(1, maxW/img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width*scale; canvas.height = img.height*scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL('image/jpeg',0.55));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderHeadRow(){
+  const headRow = document.getElementById('headRow');
+  let html = '<th>کار</th>';
+  for(let i=1;i<=30;i++) html += `<th>${i}</th>`;
+  html += '<th class="result-th">نتیجه</th>';
+  headRow.innerHTML = html;
+}
+
+function renderTable(){
+  const body = document.getElementById('tableBody');
+  body.innerHTML = '';
+  const tasks = allTasks();
+
+  if(tasks.length===0){
+    body.innerHTML = '<tr><td colspan="32" style="padding:24px; color:var(--ink-faint);">هنوز کاری اضافه نکردی</td></tr>';
+    return;
+  }
+
+  const sorted = [...tasks].sort((a,b)=> (importantMap[b.id]?1:0) - (importantMap[a.id]?1:0));
+
+  sorted.forEach(t=>{
+    const ticks = getTicks(t.id);
+    const times = getTimes(t.id);
+    const checkedCount = ticks.filter(Boolean).length;
+    const pct = Math.round((checkedCount/30)*100);
+    const isImportant = !!importantMap[t.id];
+    const photo = photoByTask[t.id];
+    const nextIdx = nextIndexOf(ticks);
+    let unlockAt = 0;
+    if(nextIdx < 30){ unlockAt = nextIdx===0 ? 0 : (times[nextIdx-1]||0)+LOCK_MS; }
+    const now = Date.now();
+    const remaining = unlockAt - now;
+
+    const tr = document.createElement('tr');
+    let cellsHtml = '';
+    ticks.forEach((on,i)=>{
+      if(on){
+        const undoable = (i === nextIdx-1);
+        cellsHtml += `<td class="day-cell on ${undoable?'':'locked'}" data-id="${t.id}" data-i="${i}" data-action="${undoable?'undo':'none'}">✓</td>`;
+      } else if(i===nextIdx && remaining<=0){
+        cellsHtml += `<td class="day-cell next-open" data-id="${t.id}" data-i="${i}" data-action="check">${i+1}</td>`;
+      } else if(i===nextIdx && remaining>0){
+        cellsHtml += `<td class="day-cell waiting" data-id="${t.id}" data-i="${i}" data-action="wait" title="زمان باقیمانده">⏳</td>`;
+      } else {
+        cellsHtml += `<td class="day-cell locked" data-id="${t.id}" data-i="${i}" data-action="none">🔒</td>`;
+      }
+    });
+
+    tr.innerHTML = `
+      <td class="habit-cell">
+        <div class="habit-inner">
+          <div class="emoji-btn" data-id="${t.id}" style="animation-delay:${(Math.random()*1.5).toFixed(2)}s">${t.emoji||'✨'}</div>
+          <input class="habit-label" data-id="${t.id}" value="${t.label}">
+          <button class="mini-btn star-btn ${isImportant?'star-on':''}" data-id="${t.id}">⭐</button>
+          <label>${photo?`<img class="photo-thumb-mini" src="${photo}" data-full="${photo}">`:'<span class="mini-btn">📷</span>'}
+            <input type="file" accept="image/*" capture="environment" data-photoid="${t.id}" style="display:none">
+          </label>
+          ${t.custom?`<button class="mini-btn del-btn" data-id="${t.id}">×</button>`:''}
+        </div>
+      </td>
+      ${cellsHtml}
+      <td class="result-cell">${pct}٪</td>
+    `;
+    body.appendChild(tr);
+  });
+
+  wireTableEvents();
+}
+
+function wireTableEvents(){
+  const body = document.getElementById('tableBody');
+
+  body.querySelectorAll('.day-cell').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const id = el.dataset.id, i = parseInt(el.dataset.i,10), action = el.dataset.action;
+      const ticks = getTicks(id), times = getTimes(id);
+      if(action==='check'){ ticks[i]=true; times[i]=Date.now(); }
+      else if(action==='undo'){ ticks[i]=false; times[i]=null; }
+      else { el.classList.add('shake'); setTimeout(()=>el.classList.remove('shake'),250); return; }
+      saveData(); renderTable();
+    });
+  });
+  body.querySelectorAll('.emoji-btn').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const ne = prompt('یه ایموجی انتخاب کن:', el.textContent.trim());
+      if(ne){ setTaskField(el.dataset.id,'emoji',ne.trim().slice(0,4)); saveData(); renderTable(); }
+    });
+  });
+  body.querySelectorAll('.habit-label').forEach(el=>{
+    el.addEventListener('change', ()=>{ setTaskField(el.dataset.id,'label',el.value); saveData(); });
+  });
+  body.querySelectorAll('.star-btn').forEach(el=>{
+    el.addEventListener('click', ()=>{ const id=el.dataset.id; importantMap[id]=!importantMap[id]; saveData(); renderTable(); });
+  });
+  body.querySelectorAll('.del-btn').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const id = el.dataset.id;
+      customTasks = customTasks.filter(t=>t.id!==id);
+      delete ticksByTask[id]; delete timesByTask[id]; delete photoByTask[id]; delete importantMap[id];
+      saveData(); renderTable();
+    });
+  });
+  body.querySelectorAll('input[type=file]').forEach(el=>{
+    el.addEventListener('change', async (e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      try{
+        const dataUrl = await compressImage(file);
+        photoByTask[el.dataset.photoid] = dataUrl;
+        await saveData();
+        renderTable();
+      }catch(err){ console.error('آپلود عکس ناموفق بود', err); }
+    });
+  });
+  body.querySelectorAll('.photo-thumb-mini').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.preventDefault();
+      document.getElementById('lightboxImg').src = el.dataset.full;
+      document.getElementById('lightbox').classList.add('open');
+    });
+  });
+}
+
+document.getElementById('lightbox').addEventListener('click', ()=>{
+  document.getElementById('lightbox').classList.remove('open');
+});
+
+function setTaskField(id, field, value){
+  let t = customTasks.find(x=>x.id===id);
+  if(t){ t[field]=value; return; }
+  const def = DEFAULT_TASKS.find(x=>x.id===id);
+  if(def){ def[field]=value; }
+}
+
+function renderAll(){
+  renderHeader();
+  renderGoals();
+  renderHeadRow();
+  renderTable();
+}
+
+document.getElementById('nameInput').addEventListener('input', (e)=>{ userName = e.target.value; saveData(); });
+document.getElementById('addBtn').addEventListener('click', addTask);
+document.getElementById('newTaskInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter') addTask(); });
+function addTask(){
+  const input = document.getElementById('newTaskInput');
+  const emojiInput = document.getElementById('emojiInput');
+  const val = input.value.trim();
+  if(!val) return;
+  const emo = emojiInput.value.trim() || '✨';
+  customTasks.push({id:'custom-'+Date.now(), label:val, emoji:emo, custom:true});
+  input.value=''; emojiInput.value='✨';
+  saveData(); renderAll();
+}
+
+(async function init(){
+  document.getElementById('tableBody').innerHTML = '<tr><td style="padding:30px; color:var(--ink-faint);">در حال بارگذاری...</td></tr>';
+  await loadData();
+  renderAll();
+  setInterval(()=>{
+    const waiting = document.querySelectorAll('.day-cell.waiting');
+    if(waiting.length>0) renderTable();
+  }, 60000);
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
+})();
+</script>
+</body>
+</html>
