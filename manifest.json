@@ -1,7 +1,7 @@
 {
-  "name": "Discipline",
-  "short_name": "Discipline",
-  "description": "ردیاب روزانه عادت‌ها و هدف‌ها",
+  "name": "REIGN",
+  "short_name": "REIGN",
+  "description": "Discipline Focus — چرخه هفتگی نظم و انضباط",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -9,7 +9,7 @@
   "theme_color": "#0a0a0a",
   "orientation": "portrait",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "reign-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "reign-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
